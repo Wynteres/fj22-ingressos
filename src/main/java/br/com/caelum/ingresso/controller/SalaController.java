@@ -27,7 +27,7 @@ public class SalaController {
     @GetMapping({"/admin/sala", "/admin/sala/{id}"})
     public ModelAndView form(@PathVariable("id") Optional<Integer> id, SalaForm salaForm) {
         ModelAndView modelAndView = new ModelAndView("sala/sala");
-        if (id.isPresent()){
+		if (id.isPresent()){
             Sala sala = salaDao.findOne(id.get());
             salaForm = new SalaForm(sala);
         }
