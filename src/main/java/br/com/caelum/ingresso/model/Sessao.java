@@ -7,23 +7,27 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class Sessao {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@ManyToOne
 	private Sala sala;
 
 	@ManyToOne
 	private Filme filme;
 
+	@DateTimeFormat(pattern = "HH:mm")
+	@NotNull
 	private LocalTime horario;
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -62,8 +66,15 @@ public class Sessao {
 		this.filme = filme;
 		this.horario = horario;
 	}
-	
+
 	public Sessao() {
 	}
+
+	@Override
+	public String toString() {
+		return "Sessao [id=" + id + ", sala=" + sala + ", filme=" + filme + ", horario=" + horario + "]";
+	}
+	
+	
 
 }
