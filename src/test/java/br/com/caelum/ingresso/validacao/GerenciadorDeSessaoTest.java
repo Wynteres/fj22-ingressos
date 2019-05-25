@@ -1,5 +1,6 @@
 package br.com.caelum.ingresso.validacao;
 
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.Arrays;
@@ -23,8 +24,8 @@ public class GerenciadorDeSessaoTest {
 
 	@Before
 	public void preparaSessoes() {
-		this.rogueOne = new Filme("Rogue One", Duration.ofMinutes(120), "SCI-FI");
-		this.sala3d = new Sala("Sala 3D");
+		this.rogueOne = new Filme("Rogue One", Duration.ofMinutes(120), "SCI-FI", BigDecimal.ONE);
+		this.sala3d = new Sala("Sala 3D", BigDecimal.TEN);
 
 		this.sessaoDasDez = new Sessao(sala3d, rogueOne, LocalTime.parse("10:00:00"));
 		this.sessaoDasTreza = new Sessao(sala3d, rogueOne, LocalTime.parse("13:00:00"));
@@ -68,5 +69,17 @@ public class GerenciadorDeSessaoTest {
 		GerenciadorDeSessao gerenciador = new GerenciadorDeSessao(sessoes);
 		Assert.assertFalse(gerenciador.cabe(sessao));
 	}
-	
+
+	@Test
+	public void oPrecoDaSessaoDeveSerIgualASomaDoPrecoDaSalaMaisOPrecoDoFilme() {
+
+		Filme filme = new Filme("Rogue One", Duration.ofMinutes(120), "SCI-FI", new BigDecimal("22.5"));
+		Sala sala = new Sala("Sala 3D", new BigDecimal("12.0"));
+
+		BigDecimal somaDosPrecosDaSalaEFilme = sala.getPreco().add(filme.getPreco());
+
+		Sessao sessao = new Sessao(sala, filme, LocalTime.parse("18:00:00"));
+		Assert.assertEquals(somaDosPrecosDaSalaEFilme, sessao.getPreco());
+	}
+
 }

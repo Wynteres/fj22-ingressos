@@ -1,5 +1,7 @@
 package br.com.caelum.ingresso.model;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalTime;
 
 import javax.persistence.Entity;
@@ -27,6 +29,8 @@ public class Sessao {
 	@DateTimeFormat(pattern = "HH:mm")
 	@NotNull
 	private LocalTime horario;
+
+	private BigDecimal preco;
 
 	public Integer getId() {
 		return id;
@@ -60,11 +64,20 @@ public class Sessao {
 		this.sala = sala;
 	}
 
+	public BigDecimal getPreco() {
+		return preco.setScale(2, RoundingMode.HALF_UP);
+	}
+
+	public void setPreco(BigDecimal preco) {
+		this.preco = preco;
+	}
+
 	public Sessao(Sala sala, Filme filme, LocalTime horario) {
 		super();
 		this.sala = sala;
 		this.filme = filme;
 		this.horario = horario;
+		this.preco = sala.getPreco().add(filme.getPreco());
 	}
 
 	public Sessao() {
@@ -74,7 +87,5 @@ public class Sessao {
 	public String toString() {
 		return "Sessao [id=" + id + ", sala=" + sala + ", filme=" + filme + ", horario=" + horario + "]";
 	}
-	
-	
 
 }
